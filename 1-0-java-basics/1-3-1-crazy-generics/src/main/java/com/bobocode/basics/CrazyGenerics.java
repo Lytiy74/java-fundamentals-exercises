@@ -4,6 +4,7 @@ import com.bobocode.basics.util.BaseEntity;
 import com.bobocode.util.ExerciseNotCompletedException;
 import lombok.Data;
 
+import javax.swing.text.html.Option;
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.Predicate;
@@ -113,7 +114,7 @@ public class CrazyGenerics {
 
     /**
      * {@link ListRepository} extends {@link CollectionRepository} but specifies the underlying collection as
-     * {@link java.util.List}.
+     * {@link List}.
      *
      * @param <T> – a type of the entity that should be a subclass of {@link BaseEntity}
      */
@@ -209,11 +210,22 @@ public class CrazyGenerics {
          * @return optional max value
          */
         // todo: create a method and implement its logic manually without using util method from JDK
+        public static <T extends Comparable<T>> Optional<T> findMax(Iterable<T> elements , Comparator<T> comparator){
+            T max = null;
+            for (T element : elements) {
+                if (max == null){
+                    max = element;
+                    continue;
+                }
+                max = comparator.compare(element,max) > 0 ? element : max;
+            }
+            return Optional.of(max);
+        }
 
         /**
          * findMostRecentlyCreatedEntity is a generic util method that accepts a collection of entities and returns the
          * one that is the most recently created. If collection is empty,
-         * it throws {@link java.util.NoSuchElementException}.
+         * it throws {@link NoSuchElementException}.
          * <p>
          * This method reuses findMax method and passes entities along with prepare comparator instance,
          * that is stored as constant CREATED_ON_COMPARATOR.
@@ -223,6 +235,9 @@ public class CrazyGenerics {
          * @return an entity from the given collection that has the max createdOn value
          */
         // todo: create a method according to JavaDoc and implement it using previous method
+//        public static <T extends BaseEntity> T findMostRecentlyCreatedEntity(Collection<T> entities){
+//            return findMax(entities, CREATED_ON_COMPARATOR).orElseThrow();
+//        }
 
         /**
          * An util method that allows to swap two elements of any list. It changes the list so the element with the index
@@ -233,10 +248,13 @@ public class CrazyGenerics {
          * @param i        index of the element to swap
          * @param j        index of the other element to swap
          */
-        public static void swap(List<?> elements, int i, int j) {
+        public static <T> void swap(List<T> elements, int i, int j) {
             Objects.checkIndex(i, elements.size());
             Objects.checkIndex(j, elements.size());
-            throw new ExerciseNotCompletedException(); // todo: complete method implementation 
+            T copyOfFirst;
+            copyOfFirst = elements.get(i);
+            elements.add(i,elements.get(j));
+            elements.add(j,copyOfFirst);
         }
 
     }
