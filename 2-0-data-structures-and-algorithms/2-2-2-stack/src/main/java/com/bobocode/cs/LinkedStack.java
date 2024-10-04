@@ -1,8 +1,6 @@
 package com.bobocode.cs;
 
 import com.bobocode.cs.exception.EmptyStackException;
-import com.bobocode.util.ExerciseNotCompletedException;
-import org.apache.commons.math3.exception.NullArgumentException;
 
 /**
  * {@link LinkedStack} is a stack implementation that is based on singly linked generic nodes.
@@ -38,6 +36,7 @@ public class LinkedStack<T> implements Stack<T> {
      * @param <T>      generic type
      * @return a new stack of elements that were passed as method parameters
      */
+    @SafeVarargs
     public static <T> LinkedStack<T> of(T... elements) {
         LinkedStack<T> linkedStack = new LinkedStack<>();
         for (T element : elements) {
