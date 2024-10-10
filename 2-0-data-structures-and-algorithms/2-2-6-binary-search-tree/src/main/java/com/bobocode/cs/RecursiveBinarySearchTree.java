@@ -2,6 +2,7 @@ package com.bobocode.cs;
 
 import com.bobocode.util.ExerciseNotCompletedException;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**
@@ -17,24 +18,80 @@ import java.util.function.Consumer;
  * @author Maksym Stasiuk
  */
 public class RecursiveBinarySearchTree<T extends Comparable<T>> implements BinarySearchTree<T> {
+    private static class Node<T> {
+        T element;
+        Node<T> left;
+        Node<T> right;
+
+        public Node(T element) {
+            this.element = element;
+        }
+    }
+
+    private int size;
+    private Node<T> root;
 
     public static <T extends Comparable<T>> RecursiveBinarySearchTree<T> of(T... elements) {
-        throw new ExerciseNotCompletedException();
+        RecursiveBinarySearchTree<T> binarySearchTree = new RecursiveBinarySearchTree<>();
+        Arrays.stream(elements).forEach(binarySearchTree::insert);
+        return binarySearchTree;
     }
 
     @Override
     public boolean insert(T element) {
-        throw new ExerciseNotCompletedException();
+        if (root == null) {
+            root = new Node<>(element);
+            size++;
+            return true;
+        } else {
+            return insert(root, element);
+        }
+    }
+
+    private boolean insert(Node<T> current, T element) {
+        if (current.element.compareTo(element) > 0) { // go left
+            if (current.left == null) {
+                current.left = new Node<>(element);
+                size++;
+                return true;
+            }
+            return insert(current.left, element);
+        } else if (current.element.compareTo(element) < 0) { // go right
+            if (current.right == null) {
+                current.right = new Node<>(element);
+                size++;
+                return true;
+            }
+            return insert(current.right, element);
+        }
+        return false;
     }
 
     @Override
     public boolean contains(T element) {
-        throw new ExerciseNotCompletedException();
+        if (element == null) throw new NullPointerException();
+        if (root != null) {
+            return contains(root, element);
+        }
+        return false;
+    }
+
+    private boolean contains(Node<T> current, T element) {
+        if (current.element.compareTo(element) > 0) {// go left
+            if (current.left != null) {
+                return contains(current.left, element);
+            }
+        } else if (current.element.compareTo(element) < 0) { // go right
+            if (current.right != null) {
+                return contains(current.right, element);
+            }
+        } else return current.element.compareTo(element) == 0;
+        return false;
     }
 
     @Override
     public int size() {
-        throw new ExerciseNotCompletedException();
+        return size;
     }
 
     @Override
