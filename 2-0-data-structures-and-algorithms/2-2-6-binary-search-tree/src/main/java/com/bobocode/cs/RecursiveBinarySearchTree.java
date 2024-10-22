@@ -1,8 +1,10 @@
 package com.bobocode.cs;
 
 import com.bobocode.util.ExerciseNotCompletedException;
+import com.sun.source.tree.BinaryTree;
 
 import java.util.Arrays;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 
 /**
@@ -96,11 +98,27 @@ public class RecursiveBinarySearchTree<T extends Comparable<T>> implements Binar
 
     @Override
     public int depth() {
-        throw new ExerciseNotCompletedException();
+        return root != null ? depth(root) - 1 : 0;
+    }
+
+    public int depth(Node<T> node) {
+        if (node == null){
+            return 0;
+        } else {
+            return 1 + Math.max(depth(node.left), depth(node.right));
+        }
     }
 
     @Override
     public void inOrderTraversal(Consumer<T> consumer) {
-        throw new ExerciseNotCompletedException();
+        inOrderTraversal(root, consumer);
+    }
+
+    private void inOrderTraversal(Node<T> node, Consumer<T> consumer) {
+        if (node != null){
+            inOrderTraversal(node.left, consumer);
+            consumer.accept(node.element);
+            inOrderTraversal(node.right, consumer);
+        }
     }
 }
