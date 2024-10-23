@@ -27,7 +27,7 @@ public class ArrayList<T> implements List<T> {
      * @throws IllegalArgumentException – if the specified initial capacity is negative or 0.
      */
     public ArrayList(int initCapacity) {
-        if (initCapacity <= 0) throw  new IllegalArgumentException();
+        if (initCapacity <= 0) throw new IllegalArgumentException();
         array = (T[]) new Object[initCapacity];
     }
 
@@ -64,7 +64,6 @@ public class ArrayList<T> implements List<T> {
         array[size] = element;
         size++;
     }
-
 
 
     private void increaseCapacityOfArray() {
@@ -149,7 +148,8 @@ public class ArrayList<T> implements List<T> {
     @Override
     public T remove(int index) {
         T deleted = get(index);
-        set(index, null);
+        System.arraycopy(array, index + 1, array, index, size - index - 1);
+        size--;
         return deleted;
     }
 
@@ -161,7 +161,10 @@ public class ArrayList<T> implements List<T> {
      */
     @Override
     public boolean contains(T element) {
-        throw new ExerciseNotCompletedException(); // todo: implement this method
+        for (T t : array) {
+            if (t != null && t.equals(element)) return true;
+        }
+        return false;
     }
 
     /**
@@ -171,7 +174,7 @@ public class ArrayList<T> implements List<T> {
      */
     @Override
     public boolean isEmpty() {
-        throw new ExerciseNotCompletedException(); // todo: implement this method
+        return size == 0;
     }
 
     /**
@@ -187,6 +190,7 @@ public class ArrayList<T> implements List<T> {
      */
     @Override
     public void clear() {
-        throw new ExerciseNotCompletedException(); // todo: implement this method
+        array = null;
+        size = 0;
     }
 }
