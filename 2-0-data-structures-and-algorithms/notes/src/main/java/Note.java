@@ -2,6 +2,10 @@ import java.util.Arrays;
 
 public class Note {
     public static void main(String[] args) {
+        sortAlgoriths();
+
+    }
+    private static void sortAlgoriths() {
         int sizeOfData = 500000;
         int[] ints = new int[sizeOfData];
         fillWithRandomNumber(ints, sizeOfData);
